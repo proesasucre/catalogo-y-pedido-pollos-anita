@@ -1,0 +1,6 @@
+{
+  "name": "Pollos Anita - Menú Digital & Pedidos Delivery",
+  "description": "Catálogo digital interactivo y pedidos a domicilio por WhatsApp de la tradicional pollería Pollos Anita. Pollo a la brasa, broaster, salchipapas y combos familiares.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
