@@ -27,30 +27,37 @@ export const Header: React.FC<HeaderProps> = ({
       {/* 1. Encabezado Superior: Información Oficial y Horarios */}
       <div className="bg-[#050505] text-zinc-300 text-xs py-2 px-4 border-b border-zinc-900">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Ubicación y Atención */}
+          {/* Teléfono de Envíos a la Izquierda, seguido de dirección y horario */}
           <div className="flex flex-wrap items-center gap-4 text-[11px] sm:text-xs">
+            <a
+              href={`https://wa.me/${settings.phoneWhatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-[#FFB300] hover:text-amber-300 font-bold transition-colors"
+            >
+              <Phone className="w-3.5 h-3.5 shrink-0 text-[#FFB300]" />
+              <span>Envíos: +591 72876260</span>
+            </a>
+
+            <span className="hidden sm:inline text-zinc-700">|</span>
+
             <span className="flex items-center gap-1.5 text-zinc-300">
               <MapPin className="w-3.5 h-3.5 text-[#FFB300] shrink-0" />
               <span className="font-medium text-white">{settings.address}</span>
             </span>
 
-            <span className="hidden sm:inline text-zinc-700">|</span>
+            <span className="hidden md:inline text-zinc-700">|</span>
 
-            <span className="flex items-center gap-1.5 text-zinc-300">
+            <span className="hidden md:flex items-center gap-1.5 text-zinc-300">
               <Clock className="w-3.5 h-3.5 text-[#FFB300] shrink-0" />
               <span>Atención: {settings.hours}</span>
             </span>
           </div>
 
-          <a
-            href={`https://wa.me/${settings.phoneWhatsapp}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-1.5 text-[#FFB300] hover:text-amber-300 font-bold transition-colors text-[11px] sm:text-xs ml-auto"
-          >
-            <Phone className="w-3.5 h-3.5 shrink-0 text-[#FFB300]" />
-            <span>Envíos: +591 72876260</span>
-          </a>
+          <div className="md:hidden flex items-center gap-1.5 text-zinc-300 text-[11px] ml-auto">
+            <Clock className="w-3.5 h-3.5 text-[#FFB300] shrink-0" />
+            <span>{settings.hours}</span>
+          </div>
         </div>
       </div>
 
