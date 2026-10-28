@@ -3,11 +3,11 @@ import React from 'react';
 export const Hero: React.FC = () => {
   return (
     <section className="relative overflow-hidden w-full h-[220px] sm:h-[300px] md:h-[360px] bg-black">
-      {/* Fondo actual del banner con gradiente suave hacia el negro */}
+      {/* Fondo 1.png del banner detrás del logotipo */}
       <img
-        src="/src/assets/images/hero_polleria_banner_1793213901178.jpg"
+        src="/1.png"
         alt="Pollos Anita"
-        className="w-full h-full object-cover object-center opacity-75"
+        className="w-full h-full object-cover object-center opacity-85"
         referrerPolicy="no-referrer"
       />
 

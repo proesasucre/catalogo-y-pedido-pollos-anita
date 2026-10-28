@@ -34,7 +34,8 @@ export default function App() {
     const saved = localStorage.getItem('pollos_anita_products');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return parsed.map((p: Product) => ({ ...p, image: '/2.png' }));
       } catch (e) {
         console.error('Error loading products', e);
       }
