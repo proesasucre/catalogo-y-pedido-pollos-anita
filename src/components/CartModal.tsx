@@ -130,9 +130,19 @@ export const CartModal: React.FC<CartModalProps> = ({
     setValidationError('');
     const message = generateOrderMessage();
     const encoded = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${settings.phoneWhatsapp}?text=${encoded}`;
+    // Número oficial de envíos solicitado: +591 72876260
+    const rawPhone = settings.phoneWhatsapp || '59172876260';
+    const cleanPhone = rawPhone.replace(/\D/g, '') || '59172876260';
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encoded}`;
 
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    try {
+      const win = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      if (!win) {
+        window.location.href = whatsappUrl;
+      }
+    } catch {
+      window.location.href = whatsappUrl;
+    }
   };
 
   const handleCopyMessage = () => {
@@ -571,14 +581,14 @@ export const CartModal: React.FC<CartModalProps> = ({
               <button
                 type="button"
                 onClick={handleSendWhatsApp}
-                className="order-1 sm:order-2 flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black py-3.5 px-5 rounded-xl text-sm sm:text-base shadow-lg hover:shadow-emerald-950/40 active:scale-98 transition-all"
+                className="order-1 sm:order-2 flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black py-3.5 px-5 rounded-xl text-sm sm:text-base shadow-lg hover:shadow-emerald-950/40 active:scale-98 transition-all cursor-pointer"
               >
                 <Send className="w-5 h-5 fill-white" />
-                <span>Enviar Pedido por WhatsApp</span>
+                <span>Enviar Pedido a WhatsApp (+591 72876260)</span>
               </button>
             </div>
-            <p className="text-[10px] text-zinc-500 text-center mt-2">
-              Se abrirá WhatsApp directamente con tu pedido preparado para confirmación instantánea.
+            <p className="text-[11px] text-zinc-400 text-center mt-2.5">
+              Tu pedido se enviará directamente al WhatsApp <strong className="text-[#25D366] font-bold">+591 72876260</strong> con el detalle completo listo para despacho.
             </p>
           </div>
         )}
