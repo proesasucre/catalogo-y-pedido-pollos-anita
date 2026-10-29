@@ -1,4 +1,5 @@
-import { Phone, MapPin, Clock, ShoppingCart, Search } from 'lucide-react';
+import React from 'react';
+import { Phone, MapPin, ShoppingCart, Search } from 'lucide-react';
 import { RestaurantSettings, Category } from '../types';
 
 interface HeaderProps {
@@ -24,45 +25,8 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-zinc-800/80 shadow-md">
-      {/* 1. Encabezado Superior: Información Oficial y Horarios */}
-      <div className="bg-[#050505] text-zinc-300 text-xs py-2 px-4 border-b border-zinc-900">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Teléfono de Envíos a la Izquierda, seguido de dirección y horario */}
-          <div className="flex flex-wrap items-center gap-4 text-[11px] sm:text-xs">
-            <a
-              href={`https://wa.me/${settings.phoneWhatsapp}`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 text-[#FFB300] hover:text-amber-300 font-bold transition-colors"
-            >
-              <Phone className="w-3.5 h-3.5 shrink-0 text-[#FFB300]" />
-              <span>Envíos: +591 72876260</span>
-            </a>
-
-            <span className="hidden sm:inline text-zinc-700">|</span>
-
-            <span className="flex items-center gap-1.5 text-zinc-300">
-              <MapPin className="w-3.5 h-3.5 text-[#FFB300] shrink-0" />
-              <span className="font-medium text-white">{settings.address}</span>
-            </span>
-
-            <span className="hidden md:inline text-zinc-700">|</span>
-
-            <span className="hidden md:flex items-center gap-1.5 text-zinc-300">
-              <Clock className="w-3.5 h-3.5 text-[#FFB300] shrink-0" />
-              <span>Atención: {settings.hours}</span>
-            </span>
-          </div>
-
-          <div className="md:hidden flex items-center gap-1.5 text-zinc-300 text-[11px] ml-auto">
-            <Clock className="w-3.5 h-3.5 text-[#FFB300] shrink-0" />
-            <span>{settings.hours}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Barra de Navegación Principal */}
-      <div className="max-w-7xl mx-auto px-4 py-3 sm:py-3.5">
+      {/* 1. Fila Superior: Logotipo Oficial de Encabezado y Nombre */}
+      <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Logo y Nombre del Negocio */}
           <div
@@ -71,9 +35,9 @@ export const Header: React.FC<HeaderProps> = ({
               onSearchChange('');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-3 cursor-pointer group shrink-0"
+            className="flex items-center gap-3.5 cursor-pointer group shrink-0"
           >
-            <div className="relative w-11 h-11 sm:w-12 sm:h-12 overflow-hidden group-hover:scale-105 transition-transform flex items-center justify-center">
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden group-hover:scale-105 transition-transform flex items-center justify-center">
               <img
                 src="/assets/aistudio/logo_transparent.png"
                 alt="Pollos Anita Logo"
@@ -82,78 +46,85 @@ export const Header: React.FC<HeaderProps> = ({
               />
             </div>
             <div>
-              <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#D32F2F] font-brand">
+              <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#D32F2F] font-brand">
                 Pollos Anita
               </span>
-              <p className="text-[11px] text-zinc-400 font-medium hidden sm:block">
+              <p className="text-xs sm:text-sm text-zinc-400 font-medium">
                 Tradición, crocancia y sabor a la brasa
               </p>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Barra de búsqueda interactiva */}
-          <div className="flex-1 max-w-md mx-2 hidden sm:block">
-            <div className="relative">
+      {/* 2. Barra de Contactos DEBAJO del logotipo:
+          A la izquierda: Ubicación -> Teléfono de envíos (sin horario)
+          A la derecha: Botón de pedidos y directamente debajo el buscador */}
+      <div className="bg-[#050505] text-zinc-300 py-2.5 px-4 border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+          {/* Bloque Izquierdo: Ubicación y Teléfono de envíos */}
+          <div className="flex flex-wrap items-center gap-3.5 sm:gap-4 text-xs sm:text-sm">
+            {/* 1. Ubicación */}
+            <span className="flex items-center gap-1.5 text-zinc-300">
+              <MapPin className="w-4 h-4 text-[#FFB300] shrink-0" />
+              <span className="font-medium text-white">{settings.address}</span>
+            </span>
+
+            <span className="hidden sm:inline text-zinc-700">|</span>
+
+            {/* 2. Teléfono de envíos */}
+            <a
+              href={`https://wa.me/${settings.phoneWhatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-[#FFB300] hover:text-amber-300 font-bold transition-colors"
+            >
+              <Phone className="w-4 h-4 shrink-0 text-[#FFB300]" />
+              <span>Envíos: +591 72876260</span>
+            </a>
+          </div>
+
+          {/* Bloque Derecho: Botón de pedidos y directamente debajo el buscador */}
+          <div className="flex flex-col items-end gap-2 w-full md:w-auto">
+            {/* Botón Ver Pedido */}
+            <button
+              onClick={onOpenCart}
+              className="flex items-center gap-2.5 bg-[#D32F2F] hover:bg-[#C62828] text-white px-3.5 sm:px-4 py-2 rounded-xl font-bold shadow-md hover:shadow-red-950/40 transition-all active:scale-95 border border-red-500/30 shrink-0"
+              title="Ver pedido y carrito"
+            >
+              <div className="relative">
+                <ShoppingCart className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-white stroke-[2.2]" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-[#FFB300] text-[#0A0A0A] font-black text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-[#0A0A0A] shadow-xs">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              <span className="text-xs sm:text-sm font-bold">
+                {cartCount === 0 ? 'Ver Pedido' : `${settings.currencySymbol} ${cartTotal.toFixed(2)}`}
+              </span>
+            </button>
+
+            {/* Buscador debajo de 'Ver Pedido' */}
+            <div className="relative w-full sm:w-72 md:w-80">
               <input
                 type="text"
                 placeholder="Buscar plato, combo o bebida..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-sm bg-[#18181B] border border-zinc-700 rounded-xl focus:outline-hidden focus:border-[#D32F2F] focus:ring-2 focus:ring-[#D32F2F]/20 transition-all text-white placeholder:text-zinc-500"
+                className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-[#141416] border border-zinc-700 rounded-xl focus:outline-hidden focus:border-[#D32F2F] focus:ring-1 focus:ring-[#D32F2F]/30 text-white placeholder:text-zinc-500 shadow-inner transition-colors"
               />
               <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               {searchQuery && (
                 <button
                   onClick={() => onSearchChange('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-white"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-white px-1"
+                  title="Limpiar búsqueda"
                 >
-                  Limpiar
+                  ✕
                 </button>
               )}
             </div>
-          </div>
-
-          {/* Botón Carrito de Compras con Carrito de Compras */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onOpenCart}
-              className="flex items-center gap-2.5 bg-[#D32F2F] hover:bg-[#C62828] text-white px-3.5 sm:px-4 py-2.5 rounded-xl font-bold shadow-lg hover:shadow-red-950/40 transition-all active:scale-95 border border-red-500/30"
-            >
-              <div className="relative">
-                {/* Carrito de compras */}
-                <ShoppingCart className="w-5 h-5 text-white stroke-[2.2]" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#FFB300] text-[#0A0A0A] font-black text-[11px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#0A0A0A] shadow-xs">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
-              <span className="hidden md:inline text-sm">
-                {cartCount === 0 ? 'Ver Carrito' : `${settings.currencySymbol} ${cartTotal.toFixed(2)}`}
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Input de búsqueda en móvil */}
-        <div className="mt-2.5 sm:hidden">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Buscar plato, combo o bebida..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs bg-[#18181B] border border-zinc-700 rounded-xl focus:outline-hidden focus:border-[#D32F2F] text-white placeholder:text-zinc-500"
-            />
-            <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            {searchQuery && (
-              <button
-                onClick={() => onSearchChange('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] text-zinc-400"
-              >
-                ✕
-              </button>
-            )}
           </div>
         </div>
       </div>
