@@ -16,8 +16,7 @@ import {
   QrCode,
   CreditCard,
   MessageSquare,
-  Sparkles,
-  AlertCircle
+  Sparkles
 } from 'lucide-react';
 import { CartItem, OrderForm, RestaurantSettings } from '../types';
 
@@ -54,7 +53,6 @@ export const CartModal: React.FC<CartModalProps> = ({
 
   const [copied, setCopied] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [validationError, setValidationError] = useState('');
 
   if (!isOpen) return null;
 
@@ -65,9 +63,14 @@ export const CartModal: React.FC<CartModalProps> = ({
 
   const generateOrderMessage = () => {
     let msg = `🍗 *¡HOLA POLLOS ANITA! DESEO REALIZAR UN PEDIDO:* \n\n`;
-    msg += `👤 *Cliente:* ${formData.customerName.trim() || 'No especificado'}\n`;
-    msg += `📱 *Teléfono:* ${formData.phone.trim() || 'No especificado'}\n`;
-    msg += `📍 *Dirección de Entrega:* ${formData.address.trim() || 'No especificada'}\n`;
+    
+    const clientName = formData.customerName.trim() || 'A coordinar por WhatsApp';
+    const clientPhone = formData.phone.trim() || 'Número de este chat';
+    const clientAddress = formData.address.trim() || 'A coordinar (enviaré mi ubicación GPS)';
+
+    msg += `👤 *Cliente:* ${clientName}\n`;
+    msg += `📱 *Teléfono:* ${clientPhone}\n`;
+    msg += `📍 *Dirección de Entrega:* ${clientAddress}\n`;
     if (formData.reference.trim()) {
       msg += `🧭 *Referencia:* ${formData.reference.trim()}\n`;
     }
@@ -113,41 +116,14 @@ export const CartModal: React.FC<CartModalProps> = ({
     return msg;
   };
 
-  const handleSendWhatsApp = () => {
-    if (!formData.customerName.trim()) {
-      setValidationError('Por favor ingresa tu nombre completo.');
-      return;
-    }
-    if (!formData.address.trim()) {
-      setValidationError('Por favor ingresa tu dirección exacta de entrega.');
-      return;
-    }
-    if (!formData.phone.trim()) {
-      setValidationError('Por favor ingresa tu número de teléfono.');
-      return;
-    }
-
-    setValidationError('');
-    const message = generateOrderMessage();
-    const encoded = encodeURIComponent(message);
-    // Número oficial de envíos solicitado: +591 72876260
-    const rawPhone = settings.phoneWhatsapp || '59172876260';
-    const cleanPhone = rawPhone.replace(/\D/g, '') || '59172876260';
-    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encoded}`;
-
-    try {
-      const win = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      if (!win) {
-        window.location.href = whatsappUrl;
-      }
-    } catch {
-      window.location.href = whatsappUrl;
-    }
-  };
+  // Número oficial de envíos solicitado: +591 72876260
+  const orderMessageText = generateOrderMessage();
+  const encodedOrderMessage = encodeURIComponent(orderMessageText);
+  const targetPhone = '59172876260';
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodedOrderMessage}`;
 
   const handleCopyMessage = () => {
-    const message = generateOrderMessage();
-    navigator.clipboard.writeText(message);
+    navigator.clipboard.writeText(orderMessageText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -325,22 +301,15 @@ export const CartModal: React.FC<CartModalProps> = ({
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
                     <MapPin className="w-3.5 h-3.5 text-[#D32F2F]" />
-                    <span>Datos para el Delivery</span>
+                    <span>Datos de Entrega</span>
                   </h4>
-                  <span className="text-[11px] text-zinc-500">Campos obligatorios *</span>
+                  <span className="text-[11px] text-zinc-400">Opcional (o envíalos por el chat)</span>
                 </div>
-
-                {validationError && (
-                  <div className="p-3 bg-red-950/70 border border-red-800 text-red-200 text-xs rounded-xl flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
-                    <span>{validationError}</span>
-                  </div>
-                )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-[11px] font-bold text-zinc-300 block mb-1">
-                      Nombre Completo *
+                      Nombre Completo
                     </label>
                     <div className="relative">
                       <input
@@ -358,7 +327,7 @@ export const CartModal: React.FC<CartModalProps> = ({
 
                   <div>
                     <label className="text-[11px] font-bold text-zinc-300 block mb-1">
-                      Teléfono WhatsApp *
+                      Teléfono WhatsApp
                     </label>
                     <div className="relative">
                       <input
@@ -377,7 +346,7 @@ export const CartModal: React.FC<CartModalProps> = ({
 
                 <div>
                   <label className="text-[11px] font-bold text-zinc-300 block mb-1">
-                    Dirección Exacta de Entrega *
+                    Dirección Exacta de Entrega
                   </label>
                   <div className="relative">
                     <input
@@ -578,14 +547,15 @@ export const CartModal: React.FC<CartModalProps> = ({
                 )}
               </button>
 
-              <button
-                type="button"
-                onClick={handleSendWhatsApp}
-                className="order-1 sm:order-2 flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black py-3.5 px-5 rounded-xl text-sm sm:text-base shadow-lg hover:shadow-emerald-950/40 active:scale-98 transition-all cursor-pointer"
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="order-1 sm:order-2 flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black py-3.5 px-5 rounded-xl text-sm sm:text-base shadow-lg hover:shadow-emerald-950/40 active:scale-98 transition-all cursor-pointer text-center no-underline"
               >
-                <Send className="w-5 h-5 fill-white" />
+                <Send className="w-5 h-5 fill-white shrink-0" />
                 <span>Enviar Pedido a WhatsApp (+591 72876260)</span>
-              </button>
+              </a>
             </div>
             <p className="text-[11px] text-zinc-400 text-center mt-2.5">
               Tu pedido se enviará directamente al WhatsApp <strong className="text-[#25D366] font-bold">+591 72876260</strong> con el detalle completo listo para despacho.
