@@ -16,6 +16,15 @@ import {
 import { CartItem, Product, ProductExtra, RestaurantSettings } from './types';
 import { CheckCircle2 } from 'lucide-react';
 
+const CATEGORY_IMAGE_MAP: Record<string, string> = {
+  'pollo-brasa': '/6.png',
+  'pollo-broaster': '/7.png',
+  'salchipapas': '/8.png',
+  'guarniciones': '/5.png',
+  'bebidas': '/4.png',
+  'postres-extras': '/3.png',
+};
+
 export default function App() {
   const [settings] = useState<RestaurantSettings>(() => {
     const saved = localStorage.getItem('pollos_anita_settings');
@@ -35,7 +44,10 @@ export default function App() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        return parsed.map((p: Product) => ({ ...p, image: '/2.png' }));
+        return parsed.map((p: Product) => ({
+          ...p,
+          image: CATEGORY_IMAGE_MAP[p.categoryId] || p.image || '/6.png',
+        }));
       } catch (e) {
         console.error('Error loading products', e);
       }
