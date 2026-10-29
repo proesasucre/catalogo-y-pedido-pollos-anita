@@ -14,11 +14,11 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
           {/* Marca e Historia */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#FFB300] bg-white p-0.5">
+              <div className="w-12 h-12 overflow-hidden flex items-center justify-center">
                 <img
-                  src="/assets/aistudio/logo_24c18b02.jpg"
+                  src="/assets/aistudio/logo_transparent.png"
                   alt="Pollos Anita"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   referrerPolicy="no-referrer"
                 />
               </div>

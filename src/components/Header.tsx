@@ -73,11 +73,11 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             className="flex items-center gap-3 cursor-pointer group shrink-0"
           >
-            <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-[#FFB300] shadow-md group-hover:scale-105 transition-transform bg-white p-0.5">
+            <div className="relative w-11 h-11 sm:w-12 sm:h-12 overflow-hidden group-hover:scale-105 transition-transform flex items-center justify-center">
               <img
-                src="/assets/aistudio/logo_24c18b02.jpg"
+                src="/assets/aistudio/logo_transparent.png"
                 alt="Pollos Anita Logo"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 referrerPolicy="no-referrer"
               />
             </div>
